@@ -1,0 +1,70 @@
+vagrant@vagrant:/vagrant$ python logAnalysis/logAnalysis.py
+What are the most popular three articles of all time? 
+
+Candidate is jerk, alleges rival   338647  views
+Bears love berries, alleges bear   253801  views
+Bad things gone, say good people   170098  views
+Goats eat Google's lawn   84906  views
+Trouble for troubled troublemakers   84810  views
+Balloon goons doomed   84557  views
+There are a lot of bears   84504  views
+Media obsessed with bears   84383  views
+
+
+Who are the most popular article authors of all time? 
+
+Ursula La Multa   507594
+Rudolf von Treppenwitz   423457
+Anonymous Contributor   170098
+Markoff Chaney   84557
+
+
+On which days did more than 1% of requests lead to errors? 
+
+Traceback (most recent call last):
+  File "logAnalysis/logAnalysis.py", line 14, in <module>
+    get_top_days()
+  File "/vagrant/logAnalysis/logAnalysisdb.py", line 80, in get_top_days
+    "SELECT aa.date, err/total*100 "
+psycopg2.ProgrammingError: missing FROM-clause entry for table "aa"
+LINE 1: ...atus, DATE(time) )AS b GROUP BY b.date) as bb ON (aa.date = ..
+
+but if I run the sql code independently…
+vagrant@vagrant:/vagrant$ psql -d news
+psql (9.5.10)
+Type "help" for help.
+
+news=> SELECT aa.date, err/total*100 
+news-> FROM
+news->     (SELECT a.date,SUM(count) as total 
+news(>     FROM 
+news(>         (SELECT status, DATE(time),count(status) 
+news(>         FROM log 
+news(>         GROUP BY status, DATE(time) 
+news(>         )AS a 
+news(>     group by a.date ) as aa
+news-> INNER JOIN 
+news->     (SELECT b.date,SUM(count) as err 
+news(>     FROM 
+news(>         (SELECT status, DATE(time),COUNT(status)  
+news(>         FROM log  
+news(>         WHERE status = '404 NOT FOUND' 
+news(>         GROUP BY status, DATE(time)
+news(>         ) AS b 
+news(>     group by b.date ) as bb
+news-> ON (aa.date = bb.date) 
+news-> 
+news-> WHERE err/total*100 > 1 
+news-> GROUP BY aa.date , err/total*100
+news-> ORDER BY aa.date; 
+
+    date    |        ?column?        
+------------+------------------------
+ 2016-07-17 | 2.26268624680272595600
+(1 row)
+
+news=> 
+news=> 
+
+
+I’ve tried to modify the code multiple times, but it still does not work. 
