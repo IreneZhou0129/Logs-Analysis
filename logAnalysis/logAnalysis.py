@@ -11,5 +11,9 @@ print "\n"
 
 # Question 3
 print "On which days did more than 1% of requests lead to errors? \n"
+<<<<<<< HEAD
 get_top_days()
 print "\n"
+=======
+get_top_days()
+>>>>>>> 476d86dbe1ac7080b204dacda37143be2d39ffce
