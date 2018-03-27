@@ -12,7 +12,7 @@ Installing VirtualBox : [Install](https://www.virtualbox.org/wiki/Downloads) the
 You do not need to launch VirtualBox after installing it.
 
 ## Running the project 
-Go into the vagrant using: vagrant up
-                           vagrant ssh
-                           cd /vagrant
-Run the python file:       python logAnalysis.py
+Go into the vagrant using: vagrant up  <br />
+                           vagrant ssh  <br />
+                           cd /vagrant  <br />
+Run the python file:       python logAnalysis.py 
